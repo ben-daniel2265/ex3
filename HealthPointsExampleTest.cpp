@@ -1,5 +1,6 @@
 
 #include <sstream>
+#include <ostream>
 
 #include "HealthPoints.h"
 
@@ -39,8 +40,11 @@ bool testArithmaticOperators()
 	HealthPoints healthPoints1; /* has 100 points out of 100 */
 	HealthPoints healthPoints2(150); /* has 150 points out of 150 */
 
+	std::cout << testResult;
+
 	healthPoints1 -= 20; /* now has 80 points out of 100 */
 	testResult = testResult && checkHealthPointsValues(healthPoints1, 80, 100);
+
 
 	healthPoints1 += 100; /* now has 100 points out of 100 */
 	testResult = testResult && checkHealthPointsValues(healthPoints1, 100, 100);
@@ -48,11 +52,14 @@ bool testArithmaticOperators()
 	healthPoints1 -= 150; /* now has 0 points out of 100 */
 	testResult = testResult && checkHealthPointsValues(healthPoints1, 0, 100);
 
+
 	healthPoints2 = healthPoints2 - 160; /* now has 0 points out of 150 */
 	testResult = testResult && checkHealthPointsValues(healthPoints2, 0, 150);
 
+
 	healthPoints2 = 160 + healthPoints1; /* now has 100 out of 100 */
 	testResult = testResult && checkHealthPointsValues(healthPoints2, 100, 100);
+
 
 	return testResult;
 

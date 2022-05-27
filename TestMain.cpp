@@ -1,6 +1,6 @@
 
 #include <functional>
-
+#include <string>
 #include "TestUtils.h"
 
 namespace HealthPointsTests {

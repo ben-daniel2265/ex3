@@ -26,16 +26,24 @@ bool testQueueMethods()
 	int front1 = queue1.front();
 	AGREGATE_TEST_RESULT(testResult, front1 == 1);
 
+	std::cout << testResult;
+
 	queue1.front() = 3;
 	front1 = queue1.front();
 	AGREGATE_TEST_RESULT(testResult, front1 == 3);
+
+	std::cout << testResult;
 
 	queue1.popFront();
 	front1 = queue1.front();
 	AGREGATE_TEST_RESULT(testResult, front1 == 2);
 
+	std::cout << testResult;
+
 	int size1 = queue1.size();
 	AGREGATE_TEST_RESULT(testResult, size1 == 1);
+
+	std::cout << testResult;
 
 	return testResult;
 }
@@ -55,6 +63,8 @@ bool testModuleFunctions()
 		queue4.popFront();
 	}
 
+	std::cout << testResult;
+
 
 	Queue<int> queue5;
 	for (int i = 1; i <= 5; i++) {
@@ -62,8 +72,11 @@ bool testModuleFunctions()
 	}
 	transform(queue5, setFortyTwo);
 	for (Queue<int>::Iterator i = queue5.begin(); i != queue5.end(); ++i) {
+		std::cout << *i << "\n";
 		AGREGATE_TEST_RESULT(testResult,(*i == 42));
 	}
+
+	std::cout << testResult;
 
 	return testResult;
 }
@@ -82,6 +95,9 @@ bool testExceptions()
 	}
 	AGREGATE_TEST_RESULT(testResult, exceptionThrown);
 
+
+	std::cout << testResult;
+
 	exceptionThrown = false;
 	Queue<int>::Iterator endIterator = queue6.end();
 	try {
@@ -91,6 +107,9 @@ bool testExceptions()
 		exceptionThrown = true;
 	}
 	AGREGATE_TEST_RESULT(testResult, exceptionThrown);
+
+
+	std::cout << testResult;
 
 	return testResult;
 }
@@ -108,6 +127,8 @@ bool testConstQueue()
 		AGREGATE_TEST_RESULT(testResult, (*i == 42));
 	}
 
+	std::cout << testResult;
+
 	bool exceptionThrown = false;
 	Queue<int>::ConstIterator endConstIterator = constQueue.end();
 	try {
@@ -117,6 +138,9 @@ bool testConstQueue()
 		exceptionThrown = true;
 	}
 	AGREGATE_TEST_RESULT(testResult, exceptionThrown);
+
+
+	std::cout << testResult;
 
 	return testResult;
 }

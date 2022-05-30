@@ -31,11 +31,11 @@ class Queue
     void popFront();
     int size() const;
 
-    template<class S>
-    friend Queue<S> filter(Queue<S> queue, bool (*con)(S));
+    template<class Operation>
+    Queue<T> filter(const Queue<T> queue, Operation filter);
 
-    template<class S>
-    friend void transform(Queue<S>& queue, void (*trans)(S&));
+    template<class Operation>
+    void transform(Queue<T>& queue, Operation transform);
 
     class Iterator;
     Iterator begin();
@@ -59,17 +59,24 @@ template<class T>
 Queue<T>::Queue(const Queue<T>& q)
 {
     this->length = q.length;
-    this->head = new QNode<T>(q.head->data);
-    QNode<T>* temp1 = this->head;
-    QNode<T>* temp2 = q.head;
 
-    while(temp2->next){
-        temp2 = temp2->next;
-        temp1->next = new QNode(temp2->data);
-        temp1 = temp1->next;
+    if(!q.head){
+        this->head = NULL;
+        this->tail = NULL;
     }
+    else{
+        this->head = new QNode<T>(q.head->data);
+        QNode<T>* temp1 = this->head;
+        QNode<T>* temp2 = q.head;
 
-    this->tail = temp1;
+        while(temp2->next){
+            temp2 = temp2->next;
+            temp1->next = new QNode<T>(temp2->data);
+            temp1 = temp1->next;
+        }
+
+        this->tail = temp1;
+    }
 }
 
 
@@ -102,7 +109,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& q)
 
     while(temp2->next){
         temp2 = temp2->next;
-        temp1->next = new QNode(temp2->data);
+        temp1->next = new QNode<T>(temp2->data);
         temp1 = temp1->next;
     }
 
@@ -120,8 +127,8 @@ void Queue<T>::pushBack(const T& value)
         this->tail = this->tail->next;
     }
     else{
-        this->tail = new QNode<T>(value);
-        this->head = this->tail;
+        this->head = new QNode<T>(value);
+        this->tail = this->head;
     }
 
     this->length++;
@@ -149,7 +156,12 @@ void Queue<T>::popFront()
     this->head = this->head->next;
     delete temp;
 
-    this->length--;
+    this->length--; 
+     
+    if(this->length == 0){
+        this->head = NULL;
+        this->tail = NULL;
+    }
 }
 
 
@@ -160,34 +172,26 @@ int Queue<T>::size() const
 }
 
 
-template<class T>
-Queue<T> filter(Queue<T> queue, bool (*con)(T))
+template<class T, class Operation>
+Queue<T> filter(const Queue<T> queue, Operation filter)
 {
     Queue<T> result = Queue<T>();
-    QNode<T>* temp = queue.head;
-    while(temp){
-        if(con(temp->data)){
-            result.pushBack(temp->data);
+
+    for(typename Queue<T>::ConstIterator iterator = queue.begin(); iterator != queue.end(); ++iterator){
+        if(filter(*iterator)){
+            result.pushBack(*iterator);
         }
-        temp = temp->next;
     }
 
     return result;
 }
 
 
-template<class T>
-void transform(Queue<T>& queue, void (*trans)(T&))
+template<class T, class Operation>
+void transform(Queue<T>& queue, Operation transform)
 {
-    QNode<T>* temp = queue.head;
-    while(temp){
-        trans(temp->data);
-        temp = temp->next;
-    }
-
-    temp = queue.head;
-    while(temp){
-        temp = temp->next;
+    for(typename Queue<T>::Iterator iterator = queue.begin(); iterator != queue.end(); ++iterator){
+        transform(*iterator);
     }
 }
 
@@ -196,13 +200,12 @@ template<class T>
 class Queue<T>::Iterator
 {
     QNode<T>* pointer;
-
     Iterator(QNode<T>* pointer);
-
     friend class Queue<T>;
+    
 
     public:
-    const T& operator*() const;
+    T& operator*() const;
     Iterator& operator++();
     Iterator operator++(int);
 
@@ -210,6 +213,7 @@ class Queue<T>::Iterator
 
     Iterator(const Iterator&) = default;
     Iterator& operator=(const Iterator&) = default;
+    ~Iterator() = default;
 
     class InvalidOperation{};
 };
@@ -222,7 +226,7 @@ Queue<T>::Iterator::Iterator(QNode<T>* pointer) :
 
 
 template<class T>
-const T& Queue<T>::Iterator::operator*() const
+T& Queue<T>::Iterator::operator*() const
 {
     return this->pointer->data;
 }
@@ -278,6 +282,7 @@ class Queue<T>::ConstIterator
 
     ConstIterator(const ConstIterator&) = default;
     ConstIterator& operator=(const ConstIterator&) = default;
+    ~ConstIterator() = default;
 
     class InvalidOperation{};
 };
@@ -287,6 +292,7 @@ template<class T>
 Queue<T>::ConstIterator::ConstIterator(QNode<T>* pointer) : 
     pointer(pointer)
 {}
+
 
 
 template<class T>
@@ -339,7 +345,10 @@ typename Queue<T>::Iterator Queue<T>::begin()
 template<class T>
 typename Queue<T>::Iterator Queue<T>::end()
 {
-    return Iterator(this->tail);
+    if(!this->tail){
+        return this->tail;
+    }
+    return Iterator(this->tail->next);
 }
 
 
@@ -353,6 +362,9 @@ typename Queue<T>::ConstIterator Queue<T>::begin() const
 template<class T>
 typename Queue<T>::ConstIterator Queue<T>::end() const
 {
+    if(!this->tail){
+        return this->tail;
+    }
     return ConstIterator(this->tail->next);
 }
 

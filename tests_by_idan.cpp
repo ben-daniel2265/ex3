@@ -17,7 +17,7 @@ using std::ofstream;
 using std::fstream;
 using std::ostringstream;
 
-static const std::string FILE_PATH = "../testOutputs";
+static const std::string FILE_PATH = "~/home/ben.daniel/ex3/testOutputs";
 int counter = 0;
 
 #define ASSERT_TEST(expr)                                                         \
@@ -492,6 +492,10 @@ bool testQueue(){
 #define NUMBER_OF_TESTS 9
 
 #define TEST_NAMES \
+    X(testHpBySegel) \
+    X(testConstructorHp) \
+    X(testBooleanOperatorsHp) \
+    X(testArithmeticOperatorsHp) \
     X(testQueueMethodsBySegel) \
     X(testModuleFunctionsBySegel) \
     X(testExceptionsBySegel) \

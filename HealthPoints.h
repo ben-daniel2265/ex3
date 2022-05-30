@@ -15,8 +15,8 @@ class HealthPoints{
     ~HealthPoints() = default;
     HealthPoints& operator=(const HealthPoints& hp) = default;
 
-    HealthPoints& operator+=(const HealthPoints& hp);
-    HealthPoints& operator-=(const HealthPoints& hp);
+    HealthPoints& operator+=(int hp);
+    HealthPoints& operator-=(int hp);
 
     friend bool operator==(const HealthPoints& hp1, const HealthPoints& hp2);
     friend bool operator>(const HealthPoints& hp1, const HealthPoints& hp2);
@@ -26,7 +26,8 @@ class HealthPoints{
 
 HealthPoints operator+(const HealthPoints& hp, const int num);
 HealthPoints operator+(const int num, const HealthPoints& hp);
-HealthPoints operator-(const HealthPoints& hp1, const HealthPoints& hp2);
+HealthPoints operator-(const HealthPoints& hp, const int num);
+HealthPoints operator-(const int num, const HealthPoints& hp);
 
 bool operator!=(const HealthPoints& hp1, const HealthPoints& hp2);
 bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2);

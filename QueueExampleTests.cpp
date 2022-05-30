@@ -63,7 +63,6 @@ bool testModuleFunctions()
 		queue4.popFront();
 	}
 
-	std::cout << testResult;
 
 
 	Queue<int> queue5;
@@ -72,18 +71,19 @@ bool testModuleFunctions()
 	}
 	transform(queue5, setFortyTwo);
 	for (Queue<int>::Iterator i = queue5.begin(); i != queue5.end(); ++i) {
-		std::cout << *i << "\n";
 		AGREGATE_TEST_RESULT(testResult,(*i == 42));
 	}
 
-	std::cout << testResult;
-
+	std::cout << "testResult1";
 	return testResult;
 }
 
 bool testExceptions()
 {
+	std::cout << "testResult";
 	bool testResult = true;
+
+	std::cout << testResult;
 
 	bool exceptionThrown = false;
 	Queue<int> queue6;
@@ -100,6 +100,7 @@ bool testExceptions()
 
 	exceptionThrown = false;
 	Queue<int>::Iterator endIterator = queue6.end();
+
 	try {
 		++endIterator;
 	}

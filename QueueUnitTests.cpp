@@ -302,7 +302,7 @@ TEST_CASE("Queue Advanced")
 
         REQUIRE_THROWS_AS(q2 = q1, std::bad_alloc);
 
-       /* auto newCopyBadAllocerQ = [](Queue<ControlledAllocer> q)
+       auto newCopyBadAllocerQ = [](Queue<ControlledAllocer> q)
         {
             Queue<ControlledAllocer> newQ(q);
         };
@@ -314,7 +314,7 @@ TEST_CASE("Queue Advanced")
             const Queue<ControlledAllocer> newQ(q);
         };
         ControlledAllocer::allowedAllocs = 5;
-        REQUIRE_THROWS_AS(newConstCopyBadAllocerQ(q1), std::bad_alloc);*/
+        REQUIRE_THROWS_AS(newConstCopyBadAllocerQ(q1), std::bad_alloc);
     }
     SECTION("Mixed Operations (with HealthPoints") 
     {

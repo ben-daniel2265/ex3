@@ -58,24 +58,12 @@ Queue<T>::Queue() :
 template<class T>
 Queue<T>::Queue(const Queue<T>& q)
 {
-    this->length = q.length;
+    this->length = 0;
+    this->head = NULL;
+    this->tail = NULL;
 
-    if(!q.head){
-        this->head = NULL;
-        this->tail = NULL;
-    }
-    else{
-        this->head = new QNode<T>(q.head->data);
-        QNode<T>* temp1 = this->head;
-        QNode<T>* temp2 = q.head;
-
-        while(temp2->next){
-            temp2 = temp2->next;
-            temp1->next = new QNode<T>(temp2->data);
-            temp1 = temp1->next;
-        }
-
-        this->tail = temp1;
+    for(typename Queue<T>::ConstIterator iterator = q.begin(); iterator != q.end(); ++iterator){
+        (*this).pushBack(*iterator);
     }
 }
 
@@ -102,18 +90,13 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& q)
     
     (*this).~Queue();
 
-    this->length = q.length;
-    this->head = new QNode<T>(q.head->data);
-    QNode<T>* temp1 = this->head;
-    QNode<T>* temp2 = q.head;
+    this->length = 0;
+    this->head = NULL;
+    this->tail = NULL;
 
-    while(temp2->next){
-        temp2 = temp2->next;
-        temp1->next = new QNode<T>(temp2->data);
-        temp1 = temp1->next;
+    for(typename Queue<T>::ConstIterator iterator = q.begin(); iterator != q.end(); ++iterator){
+        (*this).pushBack(*iterator);
     }
-
-    this->tail = temp1;
 
     return *this;
 }
